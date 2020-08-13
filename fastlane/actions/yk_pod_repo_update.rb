@@ -2,7 +2,7 @@ module Fastlane
   module Actions
     class YkPodRepoUpdateAction < Action
       def self.run(params)
-        Actions.sh "pod repo update yk".to_s
+        Actions.sh "pod repo update matteoSpecs".to_s
         UI.message "Successfully pod repo update 💾."
       end
 

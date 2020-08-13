@@ -2,10 +2,11 @@ default_platform(:ios)
 
 platform :ios do
 
-  MASTER_PATH = "https://github.com/CocoaPods/Specs.git"
-  PRIVATE_PATH = "https://github.com/wanyakun/Specs.git"
+  # MASTER_PATH = "https://github.com/CocoaPods/Specs.git"
+  # PRIVATE_PATH = "https://github.com/wanyakun/Specs.git"
 
-  SOURCES = [MASTER_PATH, PRIVATE_PATH]
+  PRIVATE_PATH = "https://github.com/matteozero/Specs.git"
+  SOURCES = [PRIVATE_PATH]
 
   ENV["LANG"] = "en_US.UTF-8"
   ENV["LC_ALL"] = "en_US.UTF-8"
@@ -80,6 +81,7 @@ platform :ios do
     yk_pod_install
 
     analyze = options[:ignore_analyze]
+    analyze = true
     unless analyze
       yk_code_analyze(project: project)
       expand_path = File.expand_path("..", Dir.pwd)
@@ -103,7 +105,7 @@ platform :ios do
     push_to_git_remote
 
     begin
-      yk_pod_push(path: path, repo: "yk", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
+      yk_pod_push(path: path, repo: "matteoSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
     rescue Exception => e
       yk_remove_tag(tag: target_version)
     else
@@ -124,6 +126,7 @@ platform :ios do
     yk_pod_install
 
     analyze = options[:ignore_analyze]
+    analyze = true
     unless analyze
       yk_code_analyze(project: project)
       expand_path = File.expand_path("..", Dir.pwd)
@@ -156,7 +159,7 @@ platform :ios do
       if File.directory?(swift_module_path)
         skip_import_validation = true
       end
-      yk_pod_push(path: lib_path, repo: "yk", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
+      yk_pod_push(path: lib_path, repo: "matteoSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
     rescue Exception => e
       yk_remove_tag(tag: target_version)
     else
@@ -177,6 +180,7 @@ platform :ios do
     yk_pod_install
 
     analyze = options[:ignore_analyze]
+    analyze = true
     unless analyze
       yk_code_analyze(project: project)
       expand_path = File.expand_path("..", Dir.pwd)
@@ -194,7 +198,11 @@ platform :ios do
       skip_import_validation = options[:skip_import_validation]
     end
 
-    yk_pod_lib_lint(verbose: false, allow_warnings: true, sources: SOURCES, use_bundle_exec: true, fail_fast: true, skip_import_validation: skip_import_validation)
+    use_libraries = false
+    if options[:use_libraries]
+      use_libraries = options[:use_libraries]
+    end
+    yk_pod_lib_lint(verbose: false, allow_warnings: true, sources: SOURCES, use_bundle_exec: true, fail_fast: true, skip_import_validation: skip_import_validation,use_libraries: use_libraries)
 
     yk_build_framework(project: project)
 
@@ -209,7 +217,7 @@ platform :ios do
       if File.directory?(swift_module_path)
         skip_import_validation = true
       end
-      yk_pod_push(path: fmk_path, repo: "yk", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
+      yk_pod_push(path: fmk_path, repo: "matteoSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
     rescue Exception => e
       yk_remove_tag(tag: target_version)
     else
