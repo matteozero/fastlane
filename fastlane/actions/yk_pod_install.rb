@@ -4,7 +4,7 @@ module Fastlane
     class YkPodInstallAction < Action
       def self.run(params)
         Actions.sh "pod repo update matteoSpecs && cd Example && pod update"
-        UI.message "Successfully pod install ⬆️ ".green
+        UI.message "Successfully pod update ⬆️ ".green
       end
 
       #####################################################
