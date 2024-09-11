@@ -5,7 +5,8 @@ platform :ios do
   # MASTER_PATH = "https://github.com/CocoaPods/Specs.git"
   # PRIVATE_PATH = "https://github.com/wanyakun/Specs.git"
 
-  PRIVATE_PATH = "https://github.com/matteozero/Specs.git"
+  PRIVATE_PATH = "https://git.web2app.co/Components/Specs.git"
+
   SOURCES = [PRIVATE_PATH]
 
   ENV["LANG"] = "en_US.UTF-8"
@@ -105,7 +106,7 @@ platform :ios do
     push_to_git_remote
 
     begin
-      yk_pod_push(path: path, repo: "matteoSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
+      yk_pod_push(path: path, repo: "GDSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
     rescue Exception => e
       yk_remove_tag(tag: target_version)
     else
@@ -159,7 +160,7 @@ platform :ios do
       if File.directory?(swift_module_path)
         skip_import_validation = true
       end
-      yk_pod_push(path: lib_path, repo: "matteoSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
+      yk_pod_push(path: lib_path, repo: "GDSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
     rescue Exception => e
       yk_remove_tag(tag: target_version)
     else
@@ -172,7 +173,13 @@ platform :ios do
   lane :yk_component_release_fmk do |options|
     target_version = options[:version]
     project = options[:project]
+    
     fmk_path = "fmk/#{project}.podspec"
+
+    skip_import_validation = false
+    if options[:skip_import_validation]
+      skip_import_validation = options[:skip_import_validation]
+    end
 
     git_pull
 
@@ -193,10 +200,7 @@ platform :ios do
       end
     end
 
-    skip_import_validation = false
-    if options[:skip_import_validation]
-      skip_import_validation = options[:skip_import_validation]
-    end
+
 
     use_libraries = false
     if options[:use_libraries]
@@ -211,13 +215,8 @@ platform :ios do
     push_to_git_remote
 
     begin
-      component_path = File.expand_path("..", Dir.pwd)
-      swift_module_path = "#{component_path}/fmk/#{project}.framework/Modules/#{project}.swiftmodule/"
-      puts swift_module_path
-      if File.directory?(swift_module_path)
-        skip_import_validation = true
-      end
-      yk_pod_push(path: fmk_path, repo: "matteoSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
+    
+      yk_pod_push(path: fmk_path, repo: "GDSpecs", allow_warnings: true, sources: SOURCES, skip_import_validation: skip_import_validation)
     rescue Exception => e
       yk_remove_tag(tag: target_version)
     else
